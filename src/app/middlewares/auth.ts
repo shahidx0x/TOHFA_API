@@ -12,16 +12,18 @@ const auth =
     try {
       const token = req.headers.authorization;
       if (!token) {
-        throw new ApiError(httpStatus.UNAUTHORIZED, 'You are not authorized');
+        throw new ApiError(httpStatus.UNAUTHORIZED, 'autorization failed');
       }
       let verifiedUser = null;
 
       verifiedUser = jwtHelpers.verifyToken(token, config.jwt.secret as Secret);
-
       req.user = verifiedUser;
 
       if (requiredRoles.length && !requiredRoles.includes(verifiedUser.role)) {
-        throw new ApiError(httpStatus.FORBIDDEN, 'Forbidden');
+        throw new ApiError(
+          httpStatus.FORBIDDEN,
+          'you are not allowed to access this route'
+        );
       }
       next();
     } catch (error) {
