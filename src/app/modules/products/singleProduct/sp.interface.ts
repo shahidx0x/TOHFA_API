@@ -3,3 +3,4 @@ export type ISingleProduct = {
   image: string;
   description: string;
 };
+

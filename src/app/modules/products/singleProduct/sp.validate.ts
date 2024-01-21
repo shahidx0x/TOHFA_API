@@ -7,6 +7,15 @@ const createSingleProductZodSchema = z.object({
     image: z.string().optional(),
   }),
 });
+
+const updateSingleProductZodSchema = z.object({
+  body: z.object({
+    name: z.string().optional(),
+    description: z.string().optional(),
+    image: z.string().optional(),
+  }),
+});
 export const SingleProductValidation = {
   createSingleProductZodSchema,
+  updateSingleProductZodSchema,
 };

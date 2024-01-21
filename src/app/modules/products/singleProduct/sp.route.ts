@@ -13,4 +13,11 @@ router.post(
   SingleProductController.createSingleProduct
 );
 
+router.patch(
+  '/single-product',
+  auth(ENUM_USER_ROLE.ADMIN),
+  validateRequest(SingleProductValidation.updateSingleProductZodSchema),
+  SingleProductController.updateSingleProduct
+);
+
 export const SingleProductRoutes = router;

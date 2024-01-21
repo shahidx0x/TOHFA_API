@@ -23,7 +23,23 @@ const createSingleProduct = async (
     );
   }
 };
-
+const updateSingleProduct = async (
+  id: string,
+  payload: Partial<ISingleProduct>
+): Promise<ISingleProduct | null> => {
+  try {
+    const result = await SingleProduct.findOneAndUpdate({ _id: id }, payload, {
+      new: true,
+    });
+    return result;
+  } catch (error) {
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      'Something went wrong'
+    );
+  }
+};
 export const SingleProductServices = {
   createSingleProduct,
+  updateSingleProduct,
 };
