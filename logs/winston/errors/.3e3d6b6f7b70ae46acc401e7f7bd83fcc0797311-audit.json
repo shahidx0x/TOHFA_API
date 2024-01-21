@@ -1,0 +1,30 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Users\\x10ge\\OneDrive\\Desktop\\TOHFA_API\\logs\\winston\\errors\\.3e3d6b6f7b70ae46acc401e7f7bd83fcc0797311-audit.json",
+    "files": [
+        {
+            "date": 1705830400607,
+            "name": "C:\\Users\\x10ge\\OneDrive\\Desktop\\TOHFA_API\\logs\\winston\\errors\\phu-2024-21-01-15-error.log",
+            "hash": "e3ad13cedcb90b32c57c94a5f2ead119ff51d99e4e41db779ec585dca33bbb10"
+        },
+        {
+            "date": 1705831596474,
+            "name": "C:\\Users\\x10ge\\OneDrive\\Desktop\\TOHFA_API\\logs\\winston\\errors\\phu-2024-21-01-16-error.log",
+            "hash": "1d55a4990f52c36a33d5e81d5903f58944ef335eef3a2cfe6acb5d07580190ea"
+        },
+        {
+            "date": 1705834802799,
+            "name": "C:\\Users\\x10ge\\OneDrive\\Desktop\\TOHFA_API\\logs\\winston\\errors\\phu-2024-21-01-17-error.log",
+            "hash": "816edaf880e2b0000d941d2323cb020809a948e369434dc93fdff6931fea0063"
+        },
+        {
+            "date": 1705838684798,
+            "name": "C:\\Users\\x10ge\\OneDrive\\Desktop\\TOHFA_API\\logs\\winston\\errors\\phu-2024-21-01-18-error.log",
+            "hash": "de0903de12f78b5a7d3cf6736ecacdf1c22afc8f1274dec48aa17debe53643cb"
+        }
+    ],
+    "hashType": "sha256"
+}
