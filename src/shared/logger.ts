@@ -37,7 +37,7 @@ const logger = createLogger({
 
 const errorlogger = createLogger({
   level: 'error',
-  format: combine(label({ label: 'PH' }), timestamp(), myFormat),
+  format: combine(label({ label: 'TOHFA_ENT_SYSTEM' }), timestamp(), myFormat),
   transports: [
     new transports.Console(),
     new DailyRotateFile({

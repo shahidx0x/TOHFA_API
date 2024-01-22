@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id           String    @id @default(uuid()) @unique(map: "user_id") @db.VarChar(32)
+  id           String   @id @default(uuid()) @unique(map: "user_id") @db.VarChar(36)
   name         String
   email        String    @unique
   password     String
@@ -21,6 +21,7 @@ model User {
   phoneNumber  String
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  @@map("users")
 }
 
 

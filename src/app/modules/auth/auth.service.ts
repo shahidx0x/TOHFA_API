@@ -2,8 +2,11 @@ import httpStatus from 'http-status';
 import { Secret } from 'jsonwebtoken';
 import config from '../../../config';
 import ApiError from '../../../errors/ApiError';
+import { isUserExist } from '../../../helpers/isUserExist';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
-import { User } from '../user/user.model';
+import { passwordHaser } from '../../../helpers/passwordHasher';
+import { passwordMatcher } from '../../../helpers/passwordMatcher';
+import prisma from '../../../server';
 import {
   ICreateUser,
   ILoginUser,
@@ -15,16 +18,18 @@ const createUser = async (
   payload: ICreateUser
 ): Promise<ILoginUserResponse> => {
   try {
-    const { email } = payload;
+    const { email, password } = payload;
     let accessToken = '';
     let refreshToken;
-    const isUserExist = await User.isUserExist(email);
-    if (isUserExist) {
+    const isExist = await isUserExist(email);
+    if (isExist) {
       throw new ApiError(409, 'User already exist');
     }
-    const user = await User.create(payload);
+    const passwordHash = await passwordHaser(password);
+    payload.password = passwordHash;
+    const user = await prisma.user.create({ data: payload });
     if (user) {
-      const { _id: userId, role, email } = user;
+      const { id: userId, role, email } = user;
       accessToken = jwtHelpers.createToken(
         { userId, role, email },
         config.jwt.secret as Secret,
@@ -64,19 +69,19 @@ const createUser = async (
 const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   const { email: payloadEmail, password } = payload;
 
-  const isUserExist = await User.isUserExist(payloadEmail);
+  const isExist = await isUserExist(payloadEmail);
 
-  if (!isUserExist) {
+  if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
   if (
-    isUserExist.password &&
-    !(await User.isPasswordMatched(password, isUserExist.password))
+    isExist.password &&
+    !(await passwordMatcher(password, isExist.password))
   ) {
     throw new ApiError(httpStatus.UNAUTHORIZED, 'Password is incorrect');
   }
 
-  const { _id: userId, role, email } = isUserExist;
+  const { id: userId, role, email } = isExist;
   const accessToken = jwtHelpers.createToken(
     { userId, role, email },
     config.jwt.secret as Secret,
@@ -107,17 +112,17 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
   }
 
   const { email } = verifiedToken;
-  const isUserExist = await User.isUserExist(email);
-  if (!isUserExist) {
+  const isExist = await isUserExist(email);
+  if (!isExist) {
     throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
 
   const newAccessToken = jwtHelpers.createToken(
     {
-      id: isUserExist._id,
-      role: isUserExist.role,
-      name: isUserExist.name,
-      email: isUserExist.email,
+      id: isExist.id,
+      role: isExist.role,
+      name: isExist.name,
+      email: isExist.email,
     },
     config.jwt.secret as Secret,
     config.jwt.expires_in as string

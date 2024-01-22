@@ -11,7 +11,9 @@ process.on('uncaughtException', error => {
 
 let server: Server;
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: ['warn', 'error'],
+});
 
 async function bootstrap() {
   try {
@@ -44,3 +46,5 @@ process.on('SIGTERM', () => {
     server.close();
   }
 });
+
+export default prisma;

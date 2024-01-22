@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
-import { Document, Model } from 'mongoose';
 
 export type IUser = {
-  _id: string;
+  id: string;
   name: string;
   email: string;
   password: string;
@@ -10,14 +9,13 @@ export type IUser = {
   role: string;
   address: string;
   phoneNumber: string;
-} & Document
+};
 
-export type UserModel = {
-  isUserExist(
-    email: string
-  ): Promise<Pick<IUser, '_id' |'name' | 'role' | 'password' | 'email'>>;
-  isPasswordMatched(
-    givenPassword: string,
-    savedPassword: string
-  ): Promise<boolean>;
-} & Model<IUser>;
+export type IsUserExist = (
+  email: string
+) => Promise<Pick<IUser, 'id' | 'name' | 'role' | 'password' | 'email'>> | null;
+
+export type IsPasswordMatched = (
+  givenPassword: string,
+  savedPassword: string
+) => Promise<boolean>;
