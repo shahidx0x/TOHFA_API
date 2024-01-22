@@ -1,5 +1,5 @@
+import { PrismaClient } from '@prisma/client';
 import { Server } from 'http';
-import mongoose from 'mongoose';
 import app from './app';
 import config from './config/index';
 import { errorlogger, logger } from './shared/logger';
@@ -11,32 +11,32 @@ process.on('uncaughtException', error => {
 
 let server: Server;
 
+const prisma = new PrismaClient();
+
 async function bootstrap() {
   try {
-
-    await mongoose.connect(config.database_url as string);
-    logger.info(`🛢 Database is connected successfully`);
+    await prisma.$connect();
+    logger.info('Connected to the database successfully');
 
     server = app.listen(config.port, () => {
-      logger.info(`Application  listening on port ${config.port}`);
+      logger.info(`Application listening on port ${config.port}`);
     });
   } catch (err) {
-    errorlogger.error('Failed to connect database', err);
+    errorlogger.error('Failed to connect to the database', err);
   }
-
-  process.on('unhandledRejection', error => {
-    if (server) {
-      server.close(() => {
-        errorlogger.error(error);
-        process.exit(1);
-      });
-    } else {
-      process.exit(1);
-    }
-  });
 }
 
 bootstrap();
+process.on('unhandledRejection', error => {
+  if (server) {
+    server.close(() => {
+      errorlogger.error(error);
+      process.exit(1);
+    });
+  } else {
+    process.exit(1);
+  }
+});
 
 process.on('SIGTERM', () => {
   logger.info('SIGTERM is received');

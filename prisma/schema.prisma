@@ -11,5 +11,16 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
+  id           String    @id @default(uuid()) @unique(map: "user_id") @db.VarChar(32)
+  name         String
+  email        String    @unique
+  password     String
+  image        String    @default("https://asa-groundhandling.com/wp-content/uploads/2019/10/placeholder-person-square.png")
+  role         String    @default("user")
+  address      String
+  phoneNumber  String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
+
+
