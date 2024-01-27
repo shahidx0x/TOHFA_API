@@ -5,7 +5,10 @@ const prisma = new PrismaClient();
 
 export async function isUserExist(
   email: string
-): Promise<Pick<IUser, 'id' | 'name' | 'role' | 'password' | 'email'> | null> {
+): Promise<Pick<
+  IUser,
+  'id' | 'name' | 'role' | 'password' | 'email' | 'image'
+> | null> {
   return await prisma.user.findUnique({
     where: { email },
     select: {
@@ -14,6 +17,7 @@ export async function isUserExist(
       role: true,
       password: true,
       email: true,
+      image: true,
     },
   });
 }

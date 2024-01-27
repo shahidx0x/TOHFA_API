@@ -5,7 +5,7 @@ export type IUser = {
   name: string;
   email: string;
   password: string;
-  image?: string;
+  image: string;
   role: string;
   address: string;
   phoneNumber: string;
@@ -13,7 +13,9 @@ export type IUser = {
 
 export type IsUserExist = (
   email: string
-) => Promise<Pick<IUser, 'id' | 'name' | 'role' | 'password' | 'email'>> | null;
+) => Promise<
+  Pick<IUser, 'id' | 'name' | 'role' | 'password' | 'email' | 'image'>
+> | null;
 
 export type IsPasswordMatched = (
   givenPassword: string,

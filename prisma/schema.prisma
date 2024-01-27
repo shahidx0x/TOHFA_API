@@ -11,17 +11,42 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(uuid()) @unique(map: "user_id") @db.VarChar(36)
-  name         String
-  email        String    @unique
-  password     String
-  image        String    @default("https://asa-groundhandling.com/wp-content/uploads/2019/10/placeholder-person-square.png")
-  role         String    @default("user")
-  address      String
-  phoneNumber  String
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  id          String   @id @unique(map: "user_id") @default(uuid()) @db.VarChar(36)
+  name        String
+  email       String   @unique
+  password    String
+  image       String   @default("https://asa-groundhandling.com/wp-content/uploads/2019/10/placeholder-person-square.png")
+  role        String   @default("user")
+  address     String
+  phoneNumber String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
   @@map("users")
+}
+
+model ProductType {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  products  Product[]
+
+  @@map("product_types")
+}
+
+model Product {
+  id          String      @id @unique(map: "product_id") @default(uuid()) @db.VarChar(36)
+  name        String
+  description String
+  quantity    Int
+  type        ProductType @relation(fields: [typeId], references: [id])
+  typeId      Int
+  image       String      @default("https://asa-groundhandling.com/wp-content/uploads/2019/10/placeholder-person-square.png")
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@map("products")
 }
 
 

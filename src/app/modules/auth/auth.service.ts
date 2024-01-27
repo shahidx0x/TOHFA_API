@@ -28,6 +28,8 @@ const createUser = async (
     const passwordHash = await passwordHaser(password);
     payload.password = passwordHash;
     const user = await prisma.user.create({ data: payload });
+    const name = user.name;
+    const image = user.image;
     if (user) {
       const { id: userId, role, email } = user;
       accessToken = jwtHelpers.createToken(
@@ -48,6 +50,8 @@ const createUser = async (
       );
     }
     return {
+      name,
+      image,
       accessToken,
       refreshToken,
     };
@@ -82,6 +86,8 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   }
 
   const { id: userId, role, email } = isExist;
+  const name = isExist.name;
+  const image = isExist.image;
   const accessToken = jwtHelpers.createToken(
     { userId, role, email },
     config.jwt.secret as Secret,
@@ -95,6 +101,8 @@ const loginUser = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
   );
 
   return {
+    name,
+    image,
     accessToken,
     refreshToken,
   };

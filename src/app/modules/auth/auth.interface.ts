@@ -15,6 +15,8 @@ export type ICreateUser = {
 };
 
 export type ILoginUserResponse = {
+  name: string;
+  image?: string;
   accessToken: string;
   refreshToken?: string;
 };
