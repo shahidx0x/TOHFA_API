@@ -25,7 +25,26 @@ const createProductType = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const getProducts = catchAsync(async (req: Request, res: Response) => {
+  const page = Number(req.query.page || 1);
+  const limit = Number(req.query.limit || 10);
+  const result = await ProductService.getProducts({ page, limit });
+  const { total, ...rest } = result;
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Product fetched successfully',
+    meta: {
+      limit,
+      page,
+      total,
+    },
+    data: rest,
+  });
+});
+
 export const ProductController = {
+  getProducts,
   createProduct,
   createProductType,
 };

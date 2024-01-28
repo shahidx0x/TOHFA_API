@@ -29,7 +29,24 @@ const createProductType = async (
   }
 };
 
+const getProducts = async (options: any) => {
+  const { page, limit } = options;
+  const skip = parseInt(limit) * parseInt(page) - parseInt(limit) || 0;
+  const take = parseInt(limit) || 10;
+
+  const result = await prisma.product.findMany({
+    skip,
+    take,
+    include: {
+      type: true,
+    },
+  });
+  const total = await prisma.product.count();
+  return { total, result };
+};
+
 export const ProductService = {
+  getProducts,
   createProduct,
   createProductType,
 };
